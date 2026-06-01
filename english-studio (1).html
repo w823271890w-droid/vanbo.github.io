@@ -1,0 +1,1020 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>English Studio · 个人英语学习室</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Newsreader:wght@400;500;600&display=swap" rel="stylesheet">
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<style>
+:root{--bg:#f5f0e6;--paper:#fbf8f1;--ink:#2c2722;--muted:#8a8175;--line:#e3dccd;--rust:#b5532e;--rust2:#9a4423;--green:#5c7a4a;--gold:#c79a3a;}
+*{box-sizing:border-box;}
+html,body{margin:0;background:var(--bg);}
+#root{max-width:760px;margin:0 auto;min-height:100vh;background:var(--bg);color:var(--ink);font-family:'Newsreader',Georgia,serif;font-size:16px;line-height:1.55;}
+.es-header{display:flex;justify-content:space-between;align-items:center;padding:18px 20px 12px;}
+.es-brand{display:flex;align-items:center;gap:12px;}
+.es-logo{width:40px;height:40px;border-radius:10px;background:var(--rust);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:700;font-size:22px;}
+.es-title{font-family:'Fraunces',serif;font-weight:700;font-size:20px;letter-spacing:-0.01em;}
+.es-sub{font-size:12.5px;color:var(--muted);}
+.es-streak{display:flex;align-items:center;gap:5px;background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:6px 12px;font-size:13px;color:var(--rust);font-weight:600;}
+.es-nav{display:flex;gap:4px;padding:0 14px;overflow-x:auto;border-bottom:1px solid var(--line);}
+.es-navbtn{display:flex;align-items:center;gap:6px;background:none;border:none;padding:11px 12px;color:var(--muted);font-family:inherit;font-size:14px;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;}
+.es-navbtn.active{color:var(--rust);border-bottom-color:var(--rust);font-weight:600;}
+.es-navbtn:hover{color:var(--ink);}
+.es-main{padding:20px;}
+.es-view{animation:fade .3s ease;}
+@keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+.es-h2{font-family:'Fraunces',serif;font-size:24px;font-weight:600;margin:0 0 4px;}
+.es-muted{color:var(--muted);}.es-muted.small,.small{font-size:13px;}.center{text-align:center;}
+.es-center{display:flex;align-items:center;justify-content:center;gap:8px;padding:40px;color:var(--muted);}
+.es-spin{animation:spin 1s linear infinite;}@keyframes spin{to{transform:rotate(360deg);}}
+.es-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:16px 0;}
+.es-stat{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:16px;}
+.es-stat.clk{cursor:pointer;}.es-stat.clk:hover{border-color:var(--rust);}
+.es-stat-v{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--rust);line-height:1;}
+.es-stat-l{font-weight:600;margin-top:6px;}.es-stat-h{font-size:12.5px;color:var(--muted);}
+.es-panel{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:18px;margin-top:14px;}
+.es-tip-head{display:flex;align-items:center;gap:8px;font-family:'Fraunces',serif;font-weight:600;color:var(--gold);margin-bottom:8px;}
+.es-tip-body{margin:0 0 12px;}
+.es-quick{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:16px;}
+.es-quickbtn{display:flex;align-items:center;gap:10px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px;font-family:inherit;font-size:15px;color:var(--ink);cursor:pointer;}
+.es-quickbtn:hover{border-color:var(--rust);color:var(--rust);}
+.es-btn{display:inline-flex;align-items:center;gap:6px;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:9px 14px;font-family:inherit;font-size:14px;color:var(--ink);cursor:pointer;transition:.15s;}
+.es-btn:hover:not(:disabled){border-color:var(--rust);}
+.es-btn:disabled{opacity:.5;cursor:default;}
+.es-btn.primary{background:var(--rust);border-color:var(--rust);color:#fff;}
+.es-btn.primary:hover:not(:disabled){background:var(--rust2);}
+.es-btn.block{width:100%;justify-content:center;margin-top:10px;}
+.es-btn.sm{padding:6px 10px;font-size:13px;}
+.es-btn.danger{color:#a33;border-color:#e0c0c0;}
+.es-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0;}
+.es-row .es-input{flex:1;min-width:120px;}
+.es-tabswitch{display:inline-flex;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:3px;margin-bottom:16px;flex-wrap:wrap;}
+.es-tabswitch button{border:none;background:none;padding:7px 18px;border-radius:8px;font-family:inherit;font-size:14px;color:var(--muted);cursor:pointer;}
+.es-tabswitch button.active{background:var(--rust);color:#fff;}
+.es-form{max-width:560px;}
+.es-label{display:block;font-size:13px;font-weight:600;color:var(--muted);margin:14px 0 6px;}
+.es-input{width:100%;background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-family:inherit;font-size:15px;color:var(--ink);resize:vertical;}
+.es-input:focus{outline:none;border-color:var(--rust);}
+.es-msg{margin-top:10px;color:var(--green);font-size:14px;}
+.es-genlist{display:flex;flex-direction:column;gap:8px;margin:10px 0;}
+.es-genitem{display:flex;gap:10px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;}
+.es-genitem.on{border-color:var(--rust);background:#fdf6f2;}
+.es-genitem.exists{opacity:.55;cursor:default;}
+.es-genchk{width:20px;height:20px;border:1px solid var(--line);border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;background:#fff;flex:0 0 auto;margin-top:2px;}
+.es-genitem.on .es-genchk{background:var(--rust);border-color:var(--rust);}
+.es-genbody{flex:1;}
+.es-genword{font-family:'Fraunces',serif;font-weight:600;font-size:16px;display:flex;align-items:center;}
+.es-genexists{font-size:11px;color:var(--muted);background:var(--bg);border-radius:10px;padding:1px 7px;margin-left:6px;font-family:'Newsreader',serif;font-weight:400;}
+.es-gendef{font-size:14px;margin-top:2px;}
+.es-genex{font-size:13px;color:var(--muted);font-style:italic;margin-top:3px;}
+.es-course-card{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:12px;cursor:pointer;}
+.es-course-card:hover{border-color:var(--rust);}
+.es-course-title{font-family:'Fraunces',serif;font-weight:600;font-size:18px;}
+.es-progress{height:7px;background:var(--line);border-radius:4px;margin:10px 0 6px;overflow:hidden;}
+.es-progbar{height:100%;background:var(--rust);border-radius:4px;transition:width .3s;}
+.es-lesson-row{display:flex;gap:12px;align-items:center;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:8px;cursor:pointer;}
+.es-lesson-row:hover{border-color:var(--rust);}
+.es-lesson-num{width:28px;height:28px;flex:0 0 auto;border-radius:50%;background:var(--bg);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:600;font-size:14px;}
+.es-lesson-num.done{background:var(--green);border-color:var(--green);color:#fff;}
+.es-lesson-title{font-weight:600;}
+.es-section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.es-section-title{font-family:'Fraunces',serif;font-weight:600;font-size:17px;color:var(--rust);}
+.es-lesson-point{font-weight:600;margin-bottom:6px;}
+.es-exline{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--line);font-size:15px;}
+.es-exline:last-child{border-bottom:none;}
+.es-listen-text{color:var(--muted);font-size:14px;}
+.es-vp{padding:8px 0;border-bottom:1px solid var(--line);}
+.es-vp:last-child{border-bottom:none;}
+.es-vp-w{font-family:'Fraunces',serif;font-weight:600;font-size:16px;display:flex;align-items:center;gap:6px;}
+.es-reading-text{font-size:16px;line-height:1.8;}
+.es-qa{margin:8px 0;padding:8px 0;border-top:1px solid var(--line);}
+.es-qa-q{font-size:14px;font-weight:600;margin-bottom:6px;}
+.es-qa-a{background:var(--bg);border-radius:8px;padding:8px 10px;font-size:14px;margin-top:6px;}
+.es-speak-prompt{padding:10px 0;border-top:1px solid var(--line);}
+.es-speak-prompt:first-child{border-top:none;}
+.es-warn{background:#fdf3e7;border:1px solid var(--gold);border-radius:12px;padding:12px 14px;margin:12px 0;font-size:14px;}
+.es-empty{text-align:center;padding:50px 20px;color:var(--muted);}
+.es-empty svg{color:var(--rust);opacity:.5;margin-bottom:12px;}
+.es-empty p{margin-bottom:16px;}
+.es-reviewer{display:flex;flex-direction:column;align-items:center;}
+.es-qremain{font-size:13px;color:var(--muted);margin-bottom:10px;}
+.es-flashcard{width:100%;min-height:240px;background:var(--paper);border:1px solid var(--line);border-radius:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:24px;text-align:center;position:relative;box-shadow:0 2px 0 var(--line);}
+.es-flashcard.flipped{background:#fff;}
+.es-word{font-family:'Fraunces',serif;font-size:38px;font-weight:600;}
+.es-hint{font-size:12.5px;color:var(--muted);margin-top:14px;}
+.es-speak{position:absolute;top:14px;right:14px;background:none;border:none;color:var(--rust);cursor:pointer;}
+.es-speak.sm{position:static;}.es-speak.float{position:absolute;bottom:6px;right:8px;opacity:.6;}
+.es-back-word{font-family:'Fraunces',serif;font-size:24px;font-weight:600;margin-bottom:10px;}
+.es-back-def{font-size:18px;}
+.es-back-ex{margin-top:14px;color:var(--muted);font-style:italic;}
+.es-rate{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%;margin-top:16px;}
+.es-rb{border:1px solid var(--line);background:#fff;border-radius:10px;padding:12px 6px;font-family:inherit;font-size:14px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;}
+.es-rb small{font-size:10px;color:var(--muted);}
+.es-rb.again:hover{border-color:#c0392b;color:#c0392b;}
+.es-rb.hard:hover{border-color:var(--gold);color:var(--gold);}
+.es-rb.good:hover{border-color:var(--green);color:var(--green);}
+.es-rb.easy:hover{border-color:#3a78c7;color:#3a78c7;}
+.es-reader{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px;margin-top:14px;font-size:18px;line-height:1.9;}
+.es-tok{cursor:pointer;border-radius:4px;padding:0 1px;}
+.es-tok:hover{background:#f5e3d8;color:var(--rust);}
+.es-pop{background:var(--paper);border:1px solid var(--rust);border-radius:12px;padding:16px;margin-top:14px;position:sticky;bottom:10px;box-shadow:0 4px 14px rgba(0,0,0,.08);}
+.es-pop-head{display:flex;align-items:center;gap:8px;font-size:18px;margin-bottom:8px;}
+.es-pop-ex{font-style:italic;color:var(--muted);}
+.es-saved{color:var(--green);display:inline-flex;align-items:center;gap:4px;font-size:14px;}
+.es-score{font-family:'Fraunces',serif;font-size:22px;font-weight:600;color:var(--rust);margin-bottom:8px;}
+.es-answer{font-size:17px;}
+.es-question{font-size:18px;margin-bottom:14px;line-height:1.7;}
+.es-options{display:flex;flex-direction:column;gap:8px;}
+.es-option{text-align:left;background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-family:inherit;font-size:15px;cursor:pointer;}
+.es-option:hover{border-color:var(--rust);}
+.es-option.right{border-color:var(--green);background:#eef3e8;}
+.es-option.wrong{border-color:#c0392b;background:#f7e8e6;}
+.es-explain{margin-top:14px;padding-top:14px;border-top:1px solid var(--line);}
+.es-explain p{margin:8px 0 12px;}
+.es-chatview{display:flex;flex-direction:column;}
+.es-chat-top{display:flex;justify-content:space-between;align-items:center;}
+.es-toggle{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px;cursor:pointer;}
+.es-chatbox{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:16px;margin:12px 0;min-height:280px;max-height:46vh;overflow-y:auto;display:flex;flex-direction:column;gap:10px;}
+.es-bubble{max-width:82%;padding:10px 14px;border-radius:14px;font-size:15px;line-height:1.5;white-space:pre-wrap;position:relative;}
+.es-bubble.user{align-self:flex-end;background:var(--rust);color:#fff;border-bottom-right-radius:4px;}
+.es-bubble.assistant{align-self:flex-start;background:#fff;border:1px solid var(--line);border-bottom-left-radius:4px;padding-bottom:24px;}
+.es-chatinput{display:flex;gap:8px;align-items:flex-end;}
+.es-chatinput .es-input{flex:1;}
+.es-levels{display:flex;gap:8px;flex-wrap:wrap;}
+.es-lvl{width:54px;border:1px solid var(--line);background:#fff;border-radius:10px;padding:10px 0;font-family:'Fraunces',serif;font-weight:600;cursor:pointer;}
+.es-lvl.active{background:var(--rust);color:#fff;border-color:var(--rust);}
+a{color:var(--rust);}
+@media(max-width:520px){.es-navbtn span{display:none;}.es-word{font-size:30px;}}
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" data-presets="react">
+const { useState, useEffect, useRef, useCallback } = React;
+
+/* ---------- 图标 ---------- */
+function Icon({ name, size = 18 }) {
+  const p = { width: size, height: size, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round", strokeLinejoin: "round" };
+  const m = {
+    home: <><path d="M3 9.5 12 3l9 6.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></>,
+    layers: <><path d="m12 2 9 5-9 5-9-5 9-5Z"/><path d="m3 12 9 5 9-5"/><path d="m3 17 9 5 9-5"/></>,
+    book: <><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></>,
+    cap: <><path d="m2 10 10-5 10 5-10 5z"/><path d="M22 10v6"/><path d="M6 12v5c0 1 2 3 6 3s6-2 6-3v-5"/></>,
+    head: <><path d="M3 14h3v6H4a1 1 0 0 1-1-1zM18 14h3v5a1 1 0 0 1-1 1h-2z"/><path d="M3 14v-2a9 9 0 0 1 18 0v2"/></>,
+    pen: <><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></>,
+    chat: <><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.5 8.5 0 0 1-3.9-.9L3 20l1.3-3.1A8.4 8.4 0 1 1 21 11.5Z"/></>,
+    gear: <><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-2.7 1.1V21a2 2 0 1 1-4 0v-.1A1.6 1.6 0 0 0 7 19.4a1.6 1.6 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0-1.1-2.7H1a2 2 0 1 1 0-4h.1A1.6 1.6 0 0 0 4.6 7l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1A1.6 1.6 0 0 0 10 4.6V4a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0 2.7 1.1l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0 1.1 2.7H23a2 2 0 1 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1Z"/></>,
+    plus: <><path d="M12 5v14M5 12h14"/></>,
+    volume: <><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></>,
+    check: <><path d="M20 6 9 17l-5-5"/></>,
+    spark: <><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M18 6l-2.5 2.5M8.5 15.5 6 18"/></>,
+    download: <><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5M12 15V3"/></>,
+    upload: <><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m17 8-5-5-5 5M12 3v12"/></>,
+    flame: <><path d="M12 2c1 5 5 6 5 11a5 5 0 0 1-10 0c0-2 1-3 2-4 .5 2 2 2.5 2 2.5C10 9 12 6 12 2Z"/></>,
+    trash: <><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></>,
+    send: <><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></>,
+    loader: <><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></>,
+  };
+  return <svg {...p} className={name === "loader" ? "es-spin" : ""}>{m[name] || null}</svg>;
+}
+
+/* ---------- 存储（localStorage）---------- */
+const store = {
+  get(key) { try { const v = localStorage.getItem("es_" + key); return v == null ? null : v; } catch (e) { return null; } },
+  set(key, value) { try { localStorage.setItem("es_" + key, value); } catch (e) {} },
+};
+
+/* ---------- 调用 AI（支持官方 / aizex 等聚合平台）---------- */
+function apiConfig() {
+  return {
+    key: (store.get("apikey") || "").trim(),
+    model: (store.get("model") || "claude-sonnet-4-6").trim(),
+    format: store.get("format") || "anthropic",                 // anthropic | openai
+    base: (store.get("baseurl") || "https://api.anthropic.com").trim(),
+  };
+}
+function normBase(base) { return base.replace(/\/+$/, "").replace(/\/v1$/, ""); }
+
+async function callClaude(messages, system, maxTokens = 1000) {
+  const c = apiConfig();
+  if (!c.key) throw new Error("NO_KEY");
+  const base = normBase(c.base);
+
+  if (c.format === "openai") {
+    // OpenAI 兼容格式：/v1/chat/completions，Authorization: Bearer
+    const msgs = system ? [{ role: "system", content: system }, ...messages] : messages;
+    const res = await fetch(base + "/v1/chat/completions", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Authorization": "Bearer " + c.key },
+      body: JSON.stringify({ model: c.model, max_tokens: maxTokens, messages: msgs }),
+    });
+    const data = await res.json();
+    if (data.error) throw new Error(data.error.message || "API error");
+    return ((data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) || "").trim();
+  }
+
+  // Anthropic（Claude）格式：/v1/messages，x-api-key
+  const body = { model: c.model, max_tokens: maxTokens, messages };
+  if (system) body.system = system;
+  const res = await fetch(base + "/v1/messages", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-api-key": c.key,
+      "anthropic-version": "2023-06-01",
+      "anthropic-dangerous-direct-browser-access": "true",
+    },
+    body: JSON.stringify(body),
+  });
+  const data = await res.json();
+  if (data.error) throw new Error(data.error.message || "API error");
+  return (data.content || []).map((b) => (b.type === "text" ? b.text : "")).join("").trim();
+}
+function parseJSON(text) {
+  const clean = text.replace(/```json/gi, "").replace(/```/g, "").trim();
+  const s = clean.indexOf("{"), a = clean.indexOf("[");
+  let start = -1;
+  if (s === -1) start = a; else if (a === -1) start = s; else start = Math.min(s, a);
+  return JSON.parse(start > 0 ? clean.slice(start) : clean);
+}
+
+function speak(text, rate = 0.95) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = "en-US"; u.rate = rate;
+  const voices = window.speechSynthesis.getVoices();
+  const v = voices.find((x) => /en[-_]US/i.test(x.lang)) || voices.find((x) => /^en/i.test(x.lang));
+  if (v) u.voice = v;
+  window.speechSynthesis.speak(u);
+}
+
+function schedule(card, q) {
+  let { ef = 2.5, interval = 0, reps = 0, lapses = 0 } = card;
+  if (q < 3) { reps = 0; lapses += 1; interval = 0; }
+  else {
+    if (reps === 0) interval = 1;
+    else if (reps === 1) interval = 6;
+    else interval = Math.round(interval * ef);
+    reps += 1;
+  }
+  ef = ef + (0.1 - (5 - q) * (0.08 + (5 - q) * 0.02));
+  if (ef < 1.3) ef = 1.3;
+  const due = Date.now() + Math.max(interval, 0) * 86400000;
+  return { ...card, ef, interval, reps, lapses, due, lastReviewed: Date.now() };
+}
+const LEVELS = ["A1", "A2", "B1", "B2", "C1", "C2"];
+const todayKey = () => new Date().toISOString().slice(0, 10);
+
+function App() {
+  const [tab, setTab] = useState("home");
+  const [deck, setDeck] = useState([]);
+  const [settings, setSettings] = useState({ level: "B1" });
+  const [stats, setStats] = useState({ streak: 0, lastStudy: null, totalReviews: 0, grammarCorrect: 0, grammarTotal: 0 });
+
+  useEffect(() => {
+    const d = store.get("deck"); if (d) setDeck(JSON.parse(d));
+    const s = store.get("settings"); if (s) setSettings(JSON.parse(s));
+    const st = store.get("stats"); if (st) setStats(JSON.parse(st));
+    if (window.speechSynthesis) window.speechSynthesis.getVoices();
+  }, []);
+
+  const saveDeck = useCallback((n) => { setDeck(n); store.set("deck", JSON.stringify(n)); }, []);
+  const saveSettings = useCallback((n) => { setSettings(n); store.set("settings", JSON.stringify(n)); }, []);
+  const saveStats = useCallback((n) => { setStats(n); store.set("stats", JSON.stringify(n)); }, []);
+  const markStudied = useCallback(() => {
+    setStats((prev) => {
+      const t = todayKey(); if (prev.lastStudy === t) return prev;
+      const y = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+      const streak = prev.lastStudy === y ? prev.streak + 1 : 1;
+      const next = { ...prev, lastStudy: t, streak };
+      store.set("stats", JSON.stringify(next)); return next;
+    });
+  }, []);
+
+  const TABS = [
+    { id: "home", label: "首页", icon: "home" },
+    { id: "course", label: "课程", icon: "cap" },
+    { id: "vocab", label: "单词", icon: "layers" },
+    { id: "reading", label: "阅读", icon: "book" },
+    { id: "listening", label: "听写", icon: "head" },
+    { id: "grammar", label: "语法", icon: "pen" },
+    { id: "chat", label: "对话", icon: "chat" },
+    { id: "settings", label: "设置", icon: "gear" },
+  ];
+
+  return (
+    <>
+      <div className="es-header">
+        <div className="es-brand">
+          <span className="es-logo">E</span>
+          <div><div className="es-title">English&nbsp;Studio</div><div className="es-sub">你的私人英语学习室 · {settings.level}</div></div>
+        </div>
+        <div className="es-streak"><Icon name="flame" size={16} /> {stats.streak}&nbsp;天</div>
+      </div>
+      <div className="es-nav">
+        {TABS.map((t) => (
+          <button key={t.id} className={"es-navbtn" + (tab === t.id ? " active" : "")} onClick={() => setTab(t.id)}>
+            <Icon name={t.icon} /><span>{t.label}</span>
+          </button>
+        ))}
+      </div>
+      <div className="es-main">
+        {tab === "home" && <HomeView deck={deck} stats={stats} settings={settings} setTab={setTab} />}
+        {tab === "course" && <CourseView deck={deck} saveDeck={saveDeck} settings={settings} />}
+        {tab === "vocab" && <VocabView deck={deck} saveDeck={saveDeck} settings={settings} stats={stats} saveStats={saveStats} markStudied={markStudied} />}
+        {tab === "reading" && <ReadingView deck={deck} saveDeck={saveDeck} settings={settings} />}
+        {tab === "listening" && <ListeningView settings={settings} />}
+        {tab === "grammar" && <GrammarView settings={settings} stats={stats} saveStats={saveStats} markStudied={markStudied} />}
+        {tab === "chat" && <ChatView settings={settings} />}
+        {tab === "settings" && <SettingsView settings={settings} saveSettings={saveSettings} deck={deck} saveDeck={saveDeck} stats={stats} saveStats={saveStats} setTab={setTab} />}
+      </div>
+    </>
+  );
+}
+
+function NoKeyHint({ setTab }) {
+  return <div className="es-warn">这个功能需要先在「设置」里填入你的 Anthropic API Key。{setTab && <a href="#" onClick={(e)=>{e.preventDefault();setTab("settings");}}>去设置 →</a>}</div>;
+}
+
+function HomeView({ deck, stats, settings, setTab }) {
+  const dueCount = deck.filter((c) => (c.due || 0) <= Date.now()).length;
+  const newCount = deck.filter((c) => !c.reps).length;
+  const [tip, setTip] = useState(""); const [loading, setLoading] = useState(false); const [err, setErr] = useState(false);
+  const acc = stats.grammarTotal ? Math.round((stats.grammarCorrect / stats.grammarTotal) * 100) : null;
+  const getTip = async () => {
+    setLoading(true); setErr(false);
+    try {
+      const sys = `你是英语学习教练，用中文给学习者一条简短(2-3句)、具体、鼓励性的学习建议。`;
+      const msg = `学习者水平 ${settings.level}。总词卡 ${deck.length}，今日待复习 ${dueCount}，连续学习 ${stats.streak} 天，语法正确率 ${acc ?? "暂无"}。给一条今天的学习建议。`;
+      setTip(await callClaude([{ role: "user", content: msg }], sys, 300));
+    } catch (e) { if (e.message === "NO_KEY") setErr(true); else setTip("（暂时获取失败，请稍后再试）"); }
+    setLoading(false);
+  };
+  return (
+    <div className="es-view">
+      <h2 className="es-h2">欢迎回来 👋</h2>
+      <div className="es-cards">
+        <Stat label="待复习" value={dueCount} hint="个单词" onClick={() => setTab("vocab")} />
+        <Stat label="新词" value={newCount} hint="尚未学" onClick={() => setTab("vocab")} />
+        <Stat label="总词库" value={deck.length} hint="张卡片" />
+        <Stat label="语法正确率" value={acc === null ? "—" : acc + "%"} hint="累计" />
+      </div>
+      <div className="es-panel">
+        <div className="es-tip-head"><Icon name="spark" /> AI 学习建议</div>
+        {err && <NoKeyHint setTab={setTab} />}
+        {tip ? <p className="es-tip-body">{tip}</p> : <p className="es-muted">让 Claude 根据你的进度给一条今天的建议。</p>}
+        <button className="es-btn primary" onClick={getTip} disabled={loading}>
+          {loading ? <Icon name="loader" size={16} /> : <Icon name="spark" size={16} />} {tip ? "再来一条" : "获取建议"}
+        </button>
+      </div>
+      <div className="es-quick">
+        <QuickAction icon="layers" label="复习单词" onClick={() => setTab("vocab")} />
+        <QuickAction icon="book" label="阅读查词" onClick={() => setTab("reading")} />
+        <QuickAction icon="pen" label="语法练习" onClick={() => setTab("grammar")} />
+        <QuickAction icon="chat" label="和 AI 对话" onClick={() => setTab("chat")} />
+      </div>
+    </div>
+  );
+}
+const Stat = ({ label, value, hint, onClick }) => (
+  <div className={"es-stat" + (onClick ? " clk" : "")} onClick={onClick}>
+    <div className="es-stat-v">{value}</div><div className="es-stat-l">{label}</div><div className="es-stat-h">{hint}</div>
+  </div>
+);
+const QuickAction = ({ icon, label, onClick }) => (
+  <button className="es-quickbtn" onClick={onClick}><Icon name={icon} size={20} /><span>{label}</span></button>
+);
+
+function VocabView({ deck, saveDeck, settings, stats, saveStats, markStudied }) {
+  const [mode, setMode] = useState("review");
+  return (
+    <div className="es-view">
+      <div className="es-tabswitch">
+        <button className={mode === "review" ? "active" : ""} onClick={() => setMode("review")}>复习</button>
+        <button className={mode === "generate" ? "active" : ""} onClick={() => setMode("generate")}>AI 生成</button>
+        <button className={mode === "add" ? "active" : ""} onClick={() => setMode("add")}>手动添加</button>
+      </div>
+      {mode === "review" && <Reviewer deck={deck} saveDeck={saveDeck} stats={stats} saveStats={saveStats} markStudied={markStudied} />}
+      {mode === "generate" && <GenerateWords deck={deck} saveDeck={saveDeck} settings={settings} />}
+      {mode === "add" && <AddWord deck={deck} saveDeck={saveDeck} settings={settings} />}
+    </div>
+  );
+}
+function Reviewer({ deck, saveDeck, stats, saveStats, markStudied }) {
+  const [queue, setQueue] = useState([]); const [flip, setFlip] = useState(false); const [started, setStarted] = useState(false);
+  const start = () => { setQueue(deck.filter((c) => (c.due || 0) <= Date.now()).map((c) => c.id)); setFlip(false); setStarted(true); };
+  const current = queue.length ? deck.find((c) => c.id === queue[0]) : null;
+  const rate = (q) => {
+    if (!current) return;
+    const updated = schedule(current, q);
+    saveDeck(deck.map((c) => (c.id === current.id ? updated : c)));
+    saveStats({ ...stats, totalReviews: (stats.totalReviews || 0) + 1 });
+    markStudied(); setFlip(false);
+    setQueue((prev) => { const rest = prev.slice(1); return q < 3 ? [...rest, current.id] : rest; });
+  };
+  if (!started) {
+    const due = deck.filter((c) => (c.due || 0) <= Date.now()).length;
+    return (
+      <div className="es-empty">
+        <Icon name="layers" size={40} />
+        <p>{deck.length === 0 ? "词库还是空的，先去「添加」加几个单词吧。" : `待复习 ${due} 个单词`}</p>
+        {deck.length > 0 && <button className="es-btn primary" onClick={start}>开始复习</button>}
+      </div>
+    );
+  }
+  if (!current) return <div className="es-empty"><Icon name="check" size={40} /><p>本轮复习完成，干得漂亮！</p><button className="es-btn" onClick={() => setStarted(false)}>返回</button></div>;
+  return (
+    <div className="es-reviewer">
+      <div className="es-qremain">还剩 {queue.length}</div>
+      <div className={"es-flashcard" + (flip ? " flipped" : "")} onClick={() => setFlip((f) => !f)}>
+        {!flip ? (
+          <div>
+            <button className="es-speak" onClick={(e) => { e.stopPropagation(); speak(current.front); }}><Icon name="volume" size={20} /></button>
+            <div className="es-word">{current.front}</div><div className="es-hint">点击查看释义</div>
+          </div>
+        ) : (
+          <div>
+            <div className="es-back-word">{current.front}</div>
+            <div className="es-back-def">{current.back}</div>
+            {current.example && <div className="es-back-ex">“{current.example}”</div>}
+          </div>
+        )}
+      </div>
+      {flip && (
+        <div className="es-rate">
+          <button className="es-rb again" onClick={() => rate(0)}>重来<small>&lt;1天</small></button>
+          <button className="es-rb hard" onClick={() => rate(3)}>困难</button>
+          <button className="es-rb good" onClick={() => rate(4)}>良好</button>
+          <button className="es-rb easy" onClick={() => rate(5)}>简单</button>
+        </div>
+      )}
+    </div>
+  );
+}
+function AddWord({ deck, saveDeck, settings }) {
+  const [word, setWord] = useState(""); const [back, setBack] = useState(""); const [example, setExample] = useState("");
+  const [loading, setLoading] = useState(false); const [msg, setMsg] = useState("");
+  const aiFill = async () => {
+    if (!word.trim()) return; setLoading(true); setMsg("");
+    try {
+      const sys = `你是英语词典助手。只返回 JSON，不要任何多余文字。`;
+      const prompt = `为英文单词或短语 "${word.trim()}" 生成学习卡片，学习者水平 ${settings.level}。返回 JSON：{"definition":"中文释义+词性，简洁","example":"一个地道的英文例句"}`;
+      const r = parseJSON(await callClaude([{ role: "user", content: prompt }], sys, 500));
+      setBack(r.definition || ""); setExample(r.example || "");
+    } catch (e) { setMsg(e.message === "NO_KEY" ? "请先在「设置」填入 API Key。" : "AI 填充失败，可手动填写。"); }
+    setLoading(false);
+  };
+  const add = () => {
+    if (!word.trim() || !back.trim()) { setMsg("请填写单词和释义。"); return; }
+    saveDeck([...deck, { id: Date.now() + "" + Math.random().toString(36).slice(2, 6), front: word.trim(), back: back.trim(), example: example.trim(), ef: 2.5, interval: 0, reps: 0, lapses: 0, due: Date.now(), created: Date.now() }]);
+    setWord(""); setBack(""); setExample(""); setMsg("已加入词库 ✓");
+  };
+  return (
+    <div className="es-form">
+      <label className="es-label">单词 / 短语</label>
+      <div className="es-row">
+        <input className="es-input" value={word} onChange={(e) => setWord(e.target.value)} placeholder="例如：resilient" />
+        <button className="es-btn" onClick={() => speak(word)} disabled={!word}><Icon name="volume" size={16} /></button>
+        <button className="es-btn primary" onClick={aiFill} disabled={loading || !word}>{loading ? <Icon name="loader" size={16} /> : <Icon name="spark" size={16} />} AI 填充</button>
+      </div>
+      <label className="es-label">释义</label>
+      <textarea className="es-input" rows={2} value={back} onChange={(e) => setBack(e.target.value)} placeholder="中文释义、词性…" />
+      <label className="es-label">例句（可选）</label>
+      <textarea className="es-input" rows={2} value={example} onChange={(e) => setExample(e.target.value)} placeholder="例句…" />
+      {msg && <div className="es-msg">{msg}</div>}
+      <button className="es-btn primary block" onClick={add}><Icon name="plus" size={16} /> 加入词库</button>
+      <p className="es-muted small">当前词库共 {deck.length} 张卡片。</p>
+    </div>
+  );
+}
+
+function GenerateWords({ deck, saveDeck, settings }) {
+  const [topic, setTopic] = useState(""); const [count, setCount] = useState(12); const [type, setType] = useState("mixed");
+  const [loading, setLoading] = useState(false); const [items, setItems] = useState(null); const [msg, setMsg] = useState("");
+  const generate = async () => {
+    if (!topic.trim()) { setMsg("请先描述你想学的内容。"); return; }
+    setLoading(true); setMsg(""); setItems(null);
+    try {
+      const typeText = type === "word" ? "单词" : type === "phrase" ? "短语或常用表达" : "单词和常用短语";
+      const sys = `你是英语学习助手。只返回 JSON 数组，不要任何多余文字、不要 markdown 代码块。`;
+      const prompt = `学习者水平 ${settings.level}。围绕主题「${topic.trim()}」，生成约 ${count} 个实用、偏高频常用的英文${typeText}，适合该水平。返回 JSON 数组，每个元素：{"word":"英文单词或短语","definition":"简洁中文释义+词性","example":"地道英文例句"}`;
+      let arr = parseJSON(await callClaude([{ role: "user", content: prompt }], sys, 2500));
+      if (!Array.isArray(arr)) arr = [];
+      const existing = new Set(deck.map((c) => (c.front || "").toLowerCase().trim()));
+      const prepared = arr.filter((x) => x && x.word).map((x) => {
+        const exists = existing.has(String(x.word).toLowerCase().trim());
+        return { word: String(x.word).trim(), definition: String(x.definition || "").trim(), example: String(x.example || "").trim(), exists, keep: !exists };
+      });
+      setItems(prepared);
+      if (prepared.length === 0) setMsg("没有生成结果，换个说法再试。");
+    } catch (e) { setMsg(e.message === "NO_KEY" ? "请先在「设置」填入接口信息。" : "生成失败，请重试或换个主题。"); }
+    setLoading(false);
+  };
+  const toggle = (i) => setItems((prev) => prev.map((it, idx) => idx === i ? { ...it, keep: !it.keep } : it));
+  const selectedCount = items ? items.filter((it) => it.keep).length : 0;
+  const addSelected = () => {
+    const chosen = items.filter((it) => it.keep);
+    if (chosen.length === 0) { setMsg("没有勾选任何词。"); return; }
+    const now = Date.now();
+    const cards = chosen.map((it, k) => ({ id: now + "" + k + Math.random().toString(36).slice(2, 5), front: it.word, back: it.definition, example: it.example, ef: 2.5, interval: 0, reps: 0, lapses: 0, due: now, created: now }));
+    saveDeck([...deck, ...cards]);
+    setMsg(`已加入 ${cards.length} 个词 ✓`);
+    setItems((prev) => prev.map((it) => it.keep ? { ...it, exists: true, keep: false } : it));
+  };
+  return (
+    <div className="es-form">
+      <p className="es-muted small">描述你想学的内容，AI 会按你的水平（{settings.level}）生成一批词，勾选后一键加入。已在词库里的会自动跳过。</p>
+      <label className="es-label">想学什么</label>
+      <textarea className="es-input" rows={2} value={topic} onChange={(e) => setTopic(e.target.value)} placeholder="例如：餐厅点餐常用词 / 商务邮件高频词 / 机场值机场景" />
+      <div className="es-row">
+        <select className="es-input" value={type} onChange={(e) => setType(e.target.value)} style={{ flex: 1 }}>
+          <option value="mixed">单词 + 短语</option>
+          <option value="word">只要单词</option>
+          <option value="phrase">只要短语 / 表达</option>
+        </select>
+        <select className="es-input" value={count} onChange={(e) => setCount(Number(e.target.value))} style={{ flex: 1 }}>
+          <option value={8}>约 8 个</option>
+          <option value={12}>约 12 个</option>
+          <option value={20}>约 20 个</option>
+        </select>
+        <button className="es-btn primary" onClick={generate} disabled={loading || !topic.trim()}>{loading ? <Icon name="loader" size={16} /> : <Icon name="spark" size={16} />} 生成</button>
+      </div>
+      {msg && <div className="es-msg">{msg}</div>}
+      {items && items.length > 0 && (
+        <>
+          <div className="es-row" style={{ justifyContent: "space-between", marginTop: 14 }}>
+            <span className="es-muted small">勾选要加入的（共 {items.length}，已选 {selectedCount}）</span>
+            <button className="es-btn primary sm" onClick={addSelected} disabled={selectedCount === 0}><Icon name="plus" size={14} /> 加入（{selectedCount}）</button>
+          </div>
+          <div className="es-genlist">
+            {items.map((it, i) => (
+              <div key={i} className={"es-genitem" + (it.keep ? " on" : "") + (it.exists ? " exists" : "")} onClick={() => !it.exists && toggle(i)}>
+                <div className="es-genchk">{it.keep ? <Icon name="check" size={14} /> : null}</div>
+                <div className="es-genbody">
+                  <div className="es-genword">{it.word}{it.exists && <span className="es-genexists">已在词库</span>}<button className="es-speak sm" style={{ marginLeft: 6 }} onClick={(e) => { e.stopPropagation(); speak(it.word); }}><Icon name="volume" size={14} /></button></div>
+                  <div className="es-gendef">{it.definition}</div>
+                  {it.example && <div className="es-genex">“{it.example}”</div>}
+                </div>
+              </div>
+            ))}
+          </div>
+          <button className="es-btn primary block" onClick={addSelected} disabled={selectedCount === 0}><Icon name="plus" size={16} /> 加入词库（{selectedCount}）</button>
+        </>
+      )}
+    </div>
+  );
+}
+
+function ReadingView({ deck, saveDeck, settings }) {
+  const [text, setText] = useState(""); const [tokens, setTokens] = useState(null); const [pop, setPop] = useState(null);
+  const render = () => { setTokens(text.split(/(\s+)/)); setPop(null); };
+  const lookup = async (raw) => {
+    const w = raw.replace(/[^A-Za-z'-]/g, ""); if (!w) return;
+    setPop({ word: w, loading: true });
+    try {
+      const sys = `你是英语词典助手。只返回 JSON。`;
+      const prompt = `单词 "${w}"（学习者水平 ${settings.level}），返回 JSON：{"definition":"简洁中文释义+词性","example":"地道英文例句"}`;
+      const r = parseJSON(await callClaude([{ role: "user", content: prompt }], sys, 400));
+      setPop({ word: w, def: r.definition, example: r.example, loading: false });
+    } catch (e) { setPop({ word: w, def: e.message === "NO_KEY" ? "请先在「设置」填入 API Key。" : "查询失败，请重试。", loading: false }); }
+  };
+  const savePop = () => {
+    if (!pop || !pop.def) return;
+    saveDeck([...deck, { id: Date.now() + "" + Math.random().toString(36).slice(2, 6), front: pop.word, back: pop.def, example: pop.example || "", ef: 2.5, interval: 0, reps: 0, lapses: 0, due: Date.now(), created: Date.now() }]);
+    setPop({ ...pop, saved: true });
+  };
+  return (
+    <div className="es-view">
+      <h2 className="es-h2">阅读查词</h2>
+      <p className="es-muted">粘贴一段英文，点「解析」，然后点任意单词查词并加入词库。</p>
+      <textarea className="es-input" rows={5} value={text} onChange={(e) => setText(e.target.value)} placeholder="Paste an English passage here…" />
+      <div className="es-row">
+        <button className="es-btn primary" onClick={render} disabled={!text.trim()}>解析文本</button>
+        <button className="es-btn" onClick={() => speak(text)} disabled={!text.trim()}><Icon name="volume" size={16} /> 朗读全文</button>
+      </div>
+      {tokens && <div className="es-reader">{tokens.map((tk, i) => /\S/.test(tk) ? <span key={i} className="es-tok" onClick={() => lookup(tk)}>{tk}</span> : <span key={i}>{tk}</span>)}</div>}
+      {pop && (
+        <div className="es-pop">
+          <div className="es-pop-head"><strong>{pop.word}</strong><button className="es-speak sm" onClick={() => speak(pop.word)}><Icon name="volume" size={16} /></button></div>
+          {pop.loading ? <Icon name="loader" /> : (
+            <>
+              <p>{pop.def}</p>
+              {pop.example && <p className="es-pop-ex">“{pop.example}”</p>}
+              {pop.saved ? <span className="es-saved"><Icon name="check" size={14} /> 已加入词库</span> : <button className="es-btn primary sm" onClick={savePop} disabled={!pop.def}><Icon name="plus" size={14} /> 加入词库</button>}
+            </>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ListeningView({ settings }) {
+  const [sentence, setSentence] = useState(""); const [answer, setAnswer] = useState("");
+  const [result, setResult] = useState(null); const [loading, setLoading] = useState(false); const [err, setErr] = useState("");
+  const next = async () => {
+    setLoading(true); setResult(null); setAnswer(""); setErr("");
+    try {
+      const sys = `只返回一个适合 ${settings.level} 水平的英文句子，不要引号、不要翻译、不要多余文字。`;
+      const s = await callClaude([{ role: "user", content: "给我一个用于听写练习的英文句子。" }], sys, 100);
+      const clean = s.replace(/^["']|["']$/g, "").trim();
+      setSentence(clean); setTimeout(() => speak(clean), 200);
+    } catch (e) { setErr(e.message === "NO_KEY" ? "请先在「设置」填入 API Key。" : "获取失败。"); }
+    setLoading(false);
+  };
+  const check = () => {
+    const norm = (s) => s.toLowerCase().replace(/[^a-z0-9 ]/g, "").replace(/\s+/g, " ").trim();
+    const a = norm(answer), b = norm(sentence);
+    const wa = a.split(" "), wb = b.split(" ");
+    const correct = wb.filter((w, i) => wa[i] === w).length;
+    setResult({ score: Math.round((correct / wb.length) * 100), correct: a === b });
+  };
+  return (
+    <div className="es-view">
+      <h2 className="es-h2">听写练习</h2>
+      <p className="es-muted">点「下一句」听一句英文，写下你听到的内容再对照。</p>
+      {err && <div className="es-warn">{err}</div>}
+      <div className="es-row">
+        <button className="es-btn primary" onClick={next} disabled={loading}>{loading ? <Icon name="loader" size={16} /> : <Icon name="spark" size={16} />} 下一句</button>
+        {sentence && <button className="es-btn" onClick={() => speak(sentence)}><Icon name="volume" size={16} /> 重听</button>}
+        {sentence && <button className="es-btn" onClick={() => speak(sentence, 0.7)}>慢速</button>}
+      </div>
+      {sentence && (
+        <>
+          <textarea className="es-input" rows={3} value={answer} onChange={(e) => setAnswer(e.target.value)} placeholder="把你听到的句子写在这里…" />
+          <button className="es-btn primary block" onClick={check} disabled={!answer.trim()}>对照答案</button>
+        </>
+      )}
+      {result && <div className="es-panel"><div className="es-score">{result.correct ? "完全正确 🎉" : `匹配度 ${result.score}%`}</div><div className="es-answer"><span className="es-muted small">原句：</span>{sentence}</div></div>}
+    </div>
+  );
+}
+
+function GrammarView({ settings, stats, saveStats, markStudied }) {
+  const [q, setQ] = useState(null); const [picked, setPicked] = useState(null);
+  const [loading, setLoading] = useState(false); const [topic, setTopic] = useState(""); const [err, setErr] = useState("");
+  const newQ = async () => {
+    setLoading(true); setQ(null); setPicked(null); setErr("");
+    try {
+      const sys = `你是英语语法老师。只返回 JSON，不要多余文字。`;
+      const prompt = `出一道 ${settings.level} 水平的英语语法选择题${topic ? "，主题：" + topic : ""}。返回 JSON：{"question":"题干（英文，含空格或选择）","options":["A选项","B选项","C选项","D选项"],"answerIndex":0,"explanation":"中文讲解为什么"}`;
+      setQ(parseJSON(await callClaude([{ role: "user", content: prompt }], sys, 600)));
+    } catch (e) { setErr(e.message === "NO_KEY" ? "请先在「设置」填入 API Key。" : "出题失败。"); }
+    setLoading(false);
+  };
+  const pick = (i) => {
+    if (picked !== null) return; setPicked(i);
+    const correct = i === q.answerIndex;
+    saveStats({ ...stats, grammarTotal: (stats.grammarTotal || 0) + 1, grammarCorrect: (stats.grammarCorrect || 0) + (correct ? 1 : 0) });
+    markStudied();
+  };
+  return (
+    <div className="es-view">
+      <h2 className="es-h2">语法练习</h2>
+      {err && <div className="es-warn">{err}</div>}
+      <div className="es-row">
+        <input className="es-input" value={topic} onChange={(e) => setTopic(e.target.value)} placeholder="主题（可选）：如 时态 / 介词" />
+        <button className="es-btn primary" onClick={newQ} disabled={loading}>{loading ? <Icon name="loader" size={16} /> : <Icon name="spark" size={16} />} 出题</button>
+      </div>
+      {q && (
+        <div className="es-panel">
+          <div className="es-question">{q.question}</div>
+          <div className="es-options">
+            {q.options.map((o, i) => {
+              let cls = "es-option";
+              if (picked !== null) { if (i === q.answerIndex) cls += " right"; else if (i === picked) cls += " wrong"; }
+              return <button key={i} className={cls} onClick={() => pick(i)}>{o}</button>;
+            })}
+          </div>
+          {picked !== null && <div className="es-explain"><strong>{picked === q.answerIndex ? "✓ 正确" : "✗ 再看看"}</strong><p>{q.explanation}</p><button className="es-btn primary sm" onClick={newQ}>下一题</button></div>}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ChatView({ settings }) {
+  const [history, setHistory] = useState([]); const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false); const [correct, setCorrect] = useState(true);
+  const endRef = useRef(null);
+  useEffect(() => { endRef.current && endRef.current.scrollIntoView({ behavior: "smooth" }); }, [history, loading]);
+  const send = async () => {
+    if (!input.trim() || loading) return;
+    const next = [...history, { role: "user", content: input.trim() }];
+    setHistory(next); setInput(""); setLoading(true);
+    try {
+      const sys = `你是友好的英语对话伙伴 "Claude"，学习者水平 ${settings.level}。请用英文自然地回应，长度适中。${correct ? "如果学习者上一句有语法或用词错误，先用一行【纠错】中文简要指出并给出更地道说法，再继续对话。没有错误就不用纠错。" : ""}`;
+      const reply = await callClaude(next.map((m) => ({ role: m.role, content: m.content })), sys, 700);
+      setHistory([...next, { role: "assistant", content: reply }]);
+    } catch (e) { setHistory([...next, { role: "assistant", content: e.message === "NO_KEY" ? "（请先在「设置」里填入 API Key。）" : "（连接失败，请稍后再试。）" }]); }
+    setLoading(false);
+  };
+  return (
+    <div className="es-view es-chatview">
+      <div className="es-chat-top"><h2 className="es-h2">和 Claude 对话</h2><label className="es-toggle"><input type="checkbox" checked={correct} onChange={(e) => setCorrect(e.target.checked)} /> 自动纠错</label></div>
+      <div className="es-chatbox">
+        {history.length === 0 && <div className="es-muted center">用英文打个招呼，开始练习对话吧！</div>}
+        {history.map((m, i) => (
+          <div key={i} className={"es-bubble " + m.role}>{m.content}{m.role === "assistant" && <button className="es-speak sm float" onClick={() => speak(m.content.replace(/【纠错】.*?\n/g, ""))}><Icon name="volume" size={14} /></button>}</div>
+        ))}
+        {loading && <div className="es-bubble assistant"><Icon name="loader" size={16} /></div>}
+        <div ref={endRef} />
+      </div>
+      <div className="es-chatinput">
+        <textarea className="es-input" rows={2} value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(); } }} placeholder="Type in English…" />
+        <button className="es-btn primary" onClick={send} disabled={loading || !input.trim()}><Icon name="send" size={16} /></button>
+      </div>
+    </div>
+  );
+}
+
+function CourseView({ deck, saveDeck, settings }) {
+  const [courses, setCourses] = useState([]);
+  const [view, setView] = useState("list");
+  const [activeId, setActiveId] = useState(null);
+  const [lessonIdx, setLessonIdx] = useState(0);
+  const [loaded, setLoaded] = useState(false);
+  useEffect(() => { const c = store.get("courses"); if (c) { try { setCourses(JSON.parse(c)); } catch (e) {} } setLoaded(true); }, []);
+  const persist = (next) => { setCourses(next); store.set("courses", JSON.stringify(next)); };
+  const active = courses.find((c) => c.id === activeId) || null;
+  const onCreated = (course) => { persist([course, ...courses]); setActiveId(course.id); setView("course"); };
+  const updateCourse = (u) => persist(courses.map((c) => c.id === u.id ? u : c));
+  const removeCourse = (id) => { persist(courses.filter((c) => c.id !== id)); setView("list"); };
+  if (!loaded) return <div className="es-center"><Icon name="loader" /> 载入中…</div>;
+  if (view === "create") return <CourseCreate settings={settings} onCancel={() => setView("list")} onCreated={onCreated} />;
+  if (view === "course" && active) return <CoursePage course={active} onBack={() => setView("list")} onOpenLesson={(i) => { setLessonIdx(i); setView("lesson"); }} onRemove={removeCourse} />;
+  if (view === "lesson" && active) return <LessonView course={active} index={lessonIdx} settings={settings} deck={deck} saveDeck={saveDeck} updateCourse={updateCourse} onBack={() => setView("course")} onNav={(i) => setLessonIdx(i)} />;
+  return (
+    <div className="es-view">
+      <div className="es-row" style={{ justifyContent: "space-between" }}>
+        <h2 className="es-h2">我的课程</h2>
+        <button className="es-btn primary" onClick={() => setView("create")}><Icon name="plus" size={16} /> 新建课程</button>
+      </div>
+      {courses.length === 0 ? (
+        <div className="es-empty"><Icon name="cap" size={40} /><p>还没有课程。点「新建课程」，描述你的目标，让 AI 给你定制一套系统课程。</p></div>
+      ) : (
+        <div style={{ marginTop: 8 }}>
+          {courses.map((c) => {
+            const done = (c.lessons || []).filter((l) => l.done).length;
+            const total = (c.lessons || []).length;
+            const pct = total ? Math.round((done / total) * 100) : 0;
+            return (
+              <div key={c.id} className="es-course-card" onClick={() => { setActiveId(c.id); setView("course"); }}>
+                <div className="es-course-title">{c.title}</div>
+                <div className="es-muted small">{c.goal} · {c.level} · {total} 课</div>
+                <div className="es-progress"><div className="es-progbar" style={{ width: pct + "%" }} /></div>
+                <div className="es-muted small">已完成 {done}/{total}（{pct}%）</div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function CourseCreate({ settings, onCancel, onCreated }) {
+  const [goal, setGoal] = useState(""); const [n, setN] = useState(8);
+  const [loading, setLoading] = useState(false); const [err, setErr] = useState("");
+  const create = async () => {
+    if (!goal.trim()) { setErr("请描述你的学习目标。"); return; }
+    setLoading(true); setErr("");
+    try {
+      const sys = `你是英语课程设计师。只返回 JSON，不要多余文字、不要 markdown。`;
+      const prompt = `为学习者设计一套系统的英语课程。学习者水平 ${settings.level}，目标：「${goal.trim()}」。规划 ${n} 课，循序渐进。返回 JSON：{"title":"课程名称(中文)","lessons":[{"title":"第1课标题(中文)","objective":"本课目标，一句话(中文)"}]}`;
+      const r = parseJSON(await callClaude([{ role: "user", content: prompt }], sys, 1500));
+      const lessons = (r.lessons || []).map((l) => ({ title: l.title || "", objective: l.objective || "", done: false, content: null }));
+      if (lessons.length === 0) { setErr("生成失败，请换个说法重试。"); setLoading(false); return; }
+      onCreated({ id: Date.now() + "" + Math.random().toString(36).slice(2, 5), title: r.title || goal.trim(), goal: goal.trim(), level: settings.level, createdAt: Date.now(), lessons });
+    } catch (e) { setErr(e.message === "NO_KEY" ? "请先在「设置」填入接口信息。" : "生成失败，请重试。"); }
+    setLoading(false);
+  };
+  return (
+    <div className="es-view es-form">
+      <h2 className="es-h2">新建课程</h2>
+      <p className="es-muted small">描述你想达到的目标，AI 会按你的水平（{settings.level}）规划分课时课程，每课涵盖语法、单词、短语、阅读、听力、口语。</p>
+      <label className="es-label">学习目标</label>
+      <textarea className="es-input" rows={3} value={goal} onChange={(e) => setGoal(e.target.value)} placeholder="例如：能在商务场合用英语开会和写邮件 / 旅行时日常沟通无障碍 / 备考雅思口语" />
+      <label className="es-label">课时数量</label>
+      <select className="es-input" value={n} onChange={(e) => setN(Number(e.target.value))}>
+        <option value={6}>6 课</option><option value={8}>8 课</option><option value={12}>12 课</option>
+      </select>
+      {err && <div className="es-warn">{err}</div>}
+      <div className="es-row" style={{ marginTop: 12 }}>
+        <button className="es-btn primary" onClick={create} disabled={loading || !goal.trim()}>{loading ? <Icon name="loader" size={16} /> : <Icon name="spark" size={16} />} 生成课程</button>
+        <button className="es-btn" onClick={onCancel}>取消</button>
+      </div>
+    </div>
+  );
+}
+
+function CoursePage({ course, onBack, onOpenLesson, onRemove }) {
+  const done = course.lessons.filter((l) => l.done).length;
+  const pct = course.lessons.length ? Math.round((done / course.lessons.length) * 100) : 0;
+  return (
+    <div className="es-view">
+      <button className="es-btn sm" onClick={onBack}>← 返回课程列表</button>
+      <h2 className="es-h2" style={{ marginTop: 10 }}>{course.title}</h2>
+      <div className="es-muted small">{course.goal} · {course.level}</div>
+      <div className="es-progress"><div className="es-progbar" style={{ width: pct + "%" }} /></div>
+      <div className="es-muted small">已完成 {done}/{course.lessons.length}（{pct}%）</div>
+      <div style={{ marginTop: 14 }}>
+        {course.lessons.map((l, i) => (
+          <div key={i} className="es-lesson-row" onClick={() => onOpenLesson(i)}>
+            <div className={"es-lesson-num" + (l.done ? " done" : "")}>{l.done ? <Icon name="check" size={14} /> : i + 1}</div>
+            <div style={{ flex: 1 }}><div className="es-lesson-title">{l.title}</div><div className="es-muted small">{l.objective}</div></div>
+          </div>
+        ))}
+      </div>
+      <button className="es-btn danger" style={{ marginTop: 18 }} onClick={() => { if (confirm("删除这套课程？")) onRemove(course.id); }}><Icon name="trash" size={16} /> 删除课程</button>
+    </div>
+  );
+}
+
+function LessonView({ course, index, settings, deck, saveDeck, updateCourse, onBack, onNav }) {
+  const lesson = course.lessons[index];
+  const [loading, setLoading] = useState(false); const [err, setErr] = useState("");
+  const content = lesson.content;
+  const genContent = async () => {
+    setLoading(true); setErr("");
+    try {
+      const sys = `你是英语课程内容设计师。只返回 JSON，不要多余文字、不要 markdown 代码块。`;
+      const prompt = `为英语课程「${course.title}」（学习者水平 ${settings.level}，课程目标：${course.goal}）生成第 ${index + 1} 课的完整内容。本课标题：「${lesson.title}」，目标：${lesson.objective}。返回 JSON：
+{"grammar":{"point":"语法点(中文)","explanation":"中文讲解","examples":["英文例句1","英文例句2","英文例句3"]},
+"vocab":[{"word":"英文单词","definition":"中文释义+词性","example":"英文例句"}],
+"phrases":[{"phrase":"英文短语/表达","meaning":"中文","example":"英文例句"}],
+"reading":{"title":"短文标题","text":"一段适合该水平的英文短文(4-7句)","questions":[{"q":"英文理解问题","a":"参考答案"}]},
+"listening":{"sentences":["英文句子1","英文句子2","英文句子3","英文句子4"]},
+"speaking":{"prompts":["口语练习任务1","口语练习任务2","口语练习任务3"]}}
+其中 vocab 约 6 个、phrases 约 4 个。`;
+      const c = parseJSON(await callClaude([{ role: "user", content: prompt }], sys, 3500));
+      updateCourse({ ...course, lessons: course.lessons.map((l, i) => i === index ? { ...l, content: c } : l) });
+    } catch (e) { setErr(e.message === "NO_KEY" ? "请先在「设置」填入接口信息。" : "生成失败，请重试。"); }
+    setLoading(false);
+  };
+  const toggleDone = () => updateCourse({ ...course, lessons: course.lessons.map((l, i) => i === index ? { ...l, done: !l.done } : l) });
+  const addToDeck = (items) => {
+    const existing = new Set(deck.map((c) => (c.front || "").toLowerCase().trim()));
+    const now = Date.now();
+    const cards = items.filter((it) => it.front && !existing.has(it.front.toLowerCase().trim()))
+      .map((it, k) => ({ id: now + "" + k + Math.random().toString(36).slice(2, 5), front: it.front, back: it.back, example: it.example || "", ef: 2.5, interval: 0, reps: 0, lapses: 0, due: now, created: now }));
+    if (cards.length) saveDeck([...deck, ...cards]);
+    return cards.length;
+  };
+  return (
+    <div className="es-view">
+      <button className="es-btn sm" onClick={onBack}>← 返回本课列表</button>
+      <h2 className="es-h2" style={{ marginTop: 10 }}>第 {index + 1} 课 · {lesson.title}</h2>
+      <div className="es-muted small">{lesson.objective}</div>
+      {!content ? (
+        <div className="es-empty" style={{ padding: "30px 10px" }}>
+          {err && <div className="es-warn">{err}</div>}
+          <p className="es-muted">本课内容还没生成。</p>
+          <button className="es-btn primary" onClick={genContent} disabled={loading}>{loading ? <Icon name="loader" size={16} /> : <Icon name="spark" size={16} />} 生成本课内容</button>
+        </div>
+      ) : (
+        <>
+          <Section title="语法">
+            {content.grammar && (<>
+              <div className="es-lesson-point">{content.grammar.point}</div>
+              <p>{content.grammar.explanation}</p>
+              {(content.grammar.examples || []).map((ex, i) => (<div key={i} className="es-exline"><span>{ex}</span><button className="es-speak sm" onClick={() => speak(ex)}><Icon name="volume" size={14} /></button></div>))}
+            </>)}
+          </Section>
+          <Section title="单词" action={<AddAllBtn label="全部加入词库" onClick={() => { const n = addToDeck((content.vocab || []).map((v) => ({ front: v.word, back: v.definition, example: v.example }))); alert(n ? `已加入 ${n} 个新词` : "都已在词库里了"); }} />}>
+            {(content.vocab || []).map((v, i) => (<div key={i} className="es-vp"><div className="es-vp-w">{v.word}<button className="es-speak sm" onClick={() => speak(v.word)}><Icon name="volume" size={13} /></button></div><div className="es-gendef">{v.definition}</div>{v.example && <div className="es-genex">“{v.example}”</div>}</div>))}
+          </Section>
+          <Section title="短语 / 表达" action={<AddAllBtn label="全部加入词库" onClick={() => { const n = addToDeck((content.phrases || []).map((p) => ({ front: p.phrase, back: p.meaning, example: p.example }))); alert(n ? `已加入 ${n} 个新短语` : "都已在词库里了"); }} />}>
+            {(content.phrases || []).map((p, i) => (<div key={i} className="es-vp"><div className="es-vp-w">{p.phrase}<button className="es-speak sm" onClick={() => speak(p.phrase)}><Icon name="volume" size={13} /></button></div><div className="es-gendef">{p.meaning}</div>{p.example && <div className="es-genex">“{p.example}”</div>}</div>))}
+          </Section>
+          <Section title="阅读" action={content.reading && <AddAllBtn label="朗读全文" onClick={() => speak(content.reading.text)} />}>
+            {content.reading && (<>
+              {content.reading.title && <div className="es-lesson-point">{content.reading.title}</div>}
+              <p className="es-reading-text">{content.reading.text}</p>
+              {(content.reading.questions || []).map((q, i) => <QA key={i} q={q.q} a={q.a} />)}
+            </>)}
+          </Section>
+          <Section title="听力">
+            <p className="es-muted small">点播放，听句子（可反复听、慢速）。</p>
+            {content.listening && (content.listening.sentences || []).map((s, i) => (<div key={i} className="es-exline"><button className="es-speak sm" onClick={() => speak(s)}><Icon name="volume" size={14} /></button><button className="es-btn sm" onClick={() => speak(s, 0.7)}>慢</button><span className="es-listen-text">{s}</span></div>))}
+          </Section>
+          <Section title="口语">
+            {content.speaking && (content.speaking.prompts || []).map((p, i) => <SpeakingPrompt key={i} prompt={p} settings={settings} level={course.level} />)}
+          </Section>
+          <button className={"es-btn block " + (lesson.done ? "" : "primary")} onClick={toggleDone}><Icon name="check" size={16} /> {lesson.done ? "已完成 ✓（点此取消）" : "标记本课完成"}</button>
+          <div className="es-row" style={{ justifyContent: "space-between", marginTop: 12 }}>
+            <button className="es-btn sm" disabled={index === 0} onClick={() => onNav(index - 1)}>← 上一课</button>
+            <button className="es-btn sm" disabled={index >= course.lessons.length - 1} onClick={() => onNav(index + 1)}>下一课 →</button>
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
+function Section({ title, action, children }) {
+  return (<div className="es-panel"><div className="es-section-head"><span className="es-section-title">{title}</span>{action}</div>{children}</div>);
+}
+function AddAllBtn({ label, onClick }) { return <button className="es-btn sm" onClick={onClick}><Icon name="plus" size={13} /> {label}</button>; }
+function QA({ q, a }) {
+  const [show, setShow] = useState(false);
+  return (<div className="es-qa"><div className="es-qa-q">Q: {q}</div>{show ? <div className="es-qa-a">{a}</div> : <button className="es-btn sm" onClick={() => setShow(true)}>看答案</button>}</div>);
+}
+function SpeakingPrompt({ prompt, settings, level }) {
+  const [answer, setAnswer] = useState(""); const [fb, setFb] = useState(""); const [loading, setLoading] = useState(false);
+  const check = async () => {
+    if (!answer.trim()) return; setLoading(true); setFb("");
+    try {
+      const sys = `你是英语口语老师，学习者水平 ${level || settings.level}。用中文简要点评学习者的回答（语法、用词、自然度），再给出一个更地道的英文范例答案。`;
+      setFb(await callClaude([{ role: "user", content: `口语任务：${prompt}\n我的回答：${answer.trim()}` }], sys, 600));
+    } catch (e) { setFb(e.message === "NO_KEY" ? "请先在「设置」填入接口信息。" : "获取点评失败。"); }
+    setLoading(false);
+  };
+  return (
+    <div className="es-speak-prompt">
+      <div className="es-qa-q">{prompt} <button className="es-speak sm" onClick={() => speak(prompt)}><Icon name="volume" size={13} /></button></div>
+      <textarea className="es-input" rows={2} value={answer} onChange={(e) => setAnswer(e.target.value)} placeholder="把你想说的写下来，AI 帮你点评和改进…" />
+      <button className="es-btn sm primary" onClick={check} disabled={loading || !answer.trim()}>{loading ? <Icon name="loader" size={13} /> : <Icon name="spark" size={13} />} 点评</button>
+      {fb && <div className="es-qa-a" style={{ whiteSpace: "pre-wrap" }}>{fb}</div>}
+    </div>
+  );
+}
+
+function SettingsView({ settings, saveSettings, deck, saveDeck, stats, saveStats }) {
+  const [msg, setMsg] = useState(""); const fileRef = useRef(null);
+  const [apiKey, setApiKey] = useState(store.get("apikey") || "");
+  const [model, setModel] = useState(store.get("model") || "claude-sonnet-4-6");
+  const [format, setFormat] = useState(store.get("format") || "anthropic");
+  const [baseurl, setBaseurl] = useState(store.get("baseurl") || "https://api.anthropic.com");
+  const saveKey = () => {
+    store.set("apikey", apiKey.trim()); store.set("model", model.trim());
+    store.set("format", format); store.set("baseurl", baseurl.trim());
+    setMsg("已保存 ✓");
+  };
+  const exportData = () => {
+    const blob = new Blob([JSON.stringify({ deck, settings, stats, exportedAt: Date.now() }, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob); const a = document.createElement("a");
+    a.href = url; a.download = `english-studio-backup-${todayKey()}.json`; a.click(); URL.revokeObjectURL(url);
+  };
+  const importData = (e) => {
+    const file = e.target.files && e.target.files[0]; if (!file) return;
+    const r = new FileReader();
+    r.onload = () => { try { const d = JSON.parse(r.result); if (d.deck) saveDeck(d.deck); if (d.settings) saveSettings(d.settings); if (d.stats) saveStats(d.stats); setMsg("导入成功 ✓"); } catch (err) { setMsg("文件格式有误。"); } };
+    r.readAsText(file);
+  };
+  return (
+    <div className="es-view es-form">
+      <h2 className="es-h2">设置</h2>
+
+      <label className="es-label">接口提供方</label>
+      <select className="es-input" value={baseurl === "https://api.anthropic.com" ? "official" : "custom"} onChange={(e) => { if (e.target.value === "official") { setBaseurl("https://api.anthropic.com"); setFormat("anthropic"); } else { setBaseurl(""); setFormat("openai"); } }}>
+        <option value="official">Anthropic 官方</option>
+        <option value="custom">聚合平台 / 中转（如 aizex）</option>
+      </select>
+
+      <label className="es-label">接口地址 Base URL</label>
+      <input className="es-input" value={baseurl} onChange={(e) => setBaseurl(e.target.value)} placeholder="例如：https://aizex.top" />
+
+      <label className="es-label">接口格式</label>
+      <select className="es-input" value={format} onChange={(e) => setFormat(e.target.value)}>
+        <option value="openai">OpenAI 格式（/v1/chat/completions，兼容性最好）</option>
+        <option value="anthropic">Claude 格式（/v1/messages）</option>
+      </select>
+
+      <label className="es-label">API Key</label>
+      <input className="es-input" type="password" value={apiKey} onChange={(e) => setApiKey(e.target.value)} placeholder="sk-..." />
+
+      <label className="es-label">模型名称</label>
+      <input className="es-input" value={model} onChange={(e) => setModel(e.target.value)} placeholder="claude-sonnet-4-6" />
+
+      <button className="es-btn primary" style={{ marginTop: 10 }} onClick={saveKey}><Icon name="check" size={16} /> 保存接口设置</button>
+      <p className="es-muted small">密钥只存在你本机浏览器里。用 aizex 时，Base URL、密钥、模型名都到 aizex 后台复制（模型名通常类似 <code>claude-sonnet-4-6</code> 或 <code>anthropic/claude-sonnet-4-6</code>，以平台为准）。用 Anthropic 官方则到 <a href="https://console.anthropic.com/" target="_blank" rel="noreferrer">console.anthropic.com</a> 获取。</p>
+
+      <label className="es-label" style={{ marginTop: 20 }}>英语水平（影响 AI 难度）</label>
+      <div className="es-levels">{LEVELS.map((l) => <button key={l} className={"es-lvl" + (settings.level === l ? " active" : "")} onClick={() => saveSettings({ ...settings, level: l })}>{l}</button>)}</div>
+
+      <label className="es-label" style={{ marginTop: 20 }}>数据备份</label>
+      <p className="es-muted small">学习数据存在本浏览器中。建议定期导出备份，换设备时再导入。</p>
+      <div className="es-row">
+        <button className="es-btn" onClick={exportData}><Icon name="download" size={16} /> 导出备份</button>
+        <button className="es-btn" onClick={() => fileRef.current.click()}><Icon name="upload" size={16} /> 导入备份</button>
+        <input type="file" accept="application/json" ref={fileRef} onChange={importData} style={{ display: "none" }} />
+      </div>
+      {msg && <div className="es-msg">{msg}</div>}
+
+      <label className="es-label" style={{ marginTop: 24 }}>危险操作</label>
+      <button className="es-btn danger" onClick={() => { if (confirm("确定清空所有单词？此操作不可恢复。")) saveDeck([]); }}><Icon name="trash" size={16} /> 清空词库（{deck.length}）</button>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>
